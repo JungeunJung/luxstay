@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Font Families ── */
+  --font-family-ko: 'Sandoll AppleGothic', 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, sans-serif;
+  --font-family-en: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-family-sans: 'Sandoll AppleGothic', 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, sans-serif;
+
+  /* ── Color Palette (스타일가이드 Grayscale) ── */
+  --color-black:    #000000;
+  --color-white:    #FFFFFF;
+  --color-gray-50:  #F5F5F5;
+  --color-gray-100: #EEEEEE;
+  --color-gray-200: #DDDDDD;
+  --color-gray-300: #BBBBBB;
+  --color-gray-400: #999999;
+  --color-gray-500: #777777;
+  --color-gray-600: #555555;
+  --color-gray-700: #444444;
+  --color-gray-800: #333333;
+  --color-gray-900: #111111;
+
+  /* ── Font Sizes (스타일가이드 추가 사이즈) ── */
+  --font-size-10: 10px;
+  --font-size-11: 11px;
+  --font-size-13: 13px;
+  --font-size-15: 15px;
+
+  /* ── Letter Spacing ── */
+  --letter-spacing-tightest: -0.04em;
+  --letter-spacing-tighter2: -0.03em;
+  --letter-spacing-tight2:   -0.025em;
+  --letter-spacing-tight3:   -0.02em;
+
+  /* ── Border Radius ── */
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-3xl:  20px;
+  --radius-full: 9999px;
+
+  /* ── Spacing ── */
+  --spacing-18: 4.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --font-ko: 'Sandoll AppleGothic', 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, sans-serif;
+    --font-en: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
+
+  html {
+    font-family: var(--font-ko);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;
+    color: #000000;
+    background-color: #FFFFFF;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* 폰트 패밀리 */
+  .font-ko { font-family: var(--font-ko); }
+  .font-en { font-family: var(--font-en); }
+
+  /* 스타일가이드 추가 폰트 사이즈 */
+  .text-10 { font-size: 10px; line-height: 1.4; }
+  .text-11 { font-size: 11px; line-height: 1.4; }
+  .text-13 { font-size: 13px; line-height: 1.6; }
+  .text-15 { font-size: 15px; line-height: 1.6; }
+
+  /* 스타일가이드 letter-spacing */
+  .tracking-tightest { letter-spacing: -0.04em; }
+  .tracking-tighter2 { letter-spacing: -0.03em; }
+  .tracking-tight2   { letter-spacing: -0.025em; }
+  .tracking-tight3   { letter-spacing: -0.02em; }
+
+  /* 스타일가이드 border-radius */
+  .rounded-20 { border-radius: 20px; }
 }
