@@ -5,9 +5,9 @@ import PropertyListSection from "@/components/property/PropertyListSection";
 export default function HomePage() {
   return (
     <main>
-      {/* ── 검색 영역 ── */}
-      <section className="px-6 md:px-10 lg:px-16 py-4">
-        <div className="max-w-screen-xl mx-auto">
+      {/* ── 검색 바 ── */}
+      <section id="search-section" className="px-6 md:px-10 lg:px-16 py-4 bg-white">
+        <div className="max-w-[1000px] mx-auto">
           <Suspense>
             <SearchBar variant="compact" />
           </Suspense>
@@ -15,7 +15,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 숙소 목록 ── */}
-      <section className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-8 pb-24">
+      <section className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-10 pb-24">
         <Suspense>
           <PropertyListSection />
         </Suspense>

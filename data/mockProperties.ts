@@ -174,8 +174,8 @@ export const MOCK_PROPERTIES: Property[] = [
     description:
       "한려해상국립공원의 절경이 펼쳐지는 여수 돌산도 프라이빗 펜션입니다. 여수 밤바다의 낭만을 만끽하세요.",
     images: [
-      "https://images.unsplash.com/photo-1520637836993-5e3d8e7c78a9?w=1200&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1200&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop",
     ],
     pricePerNight: 195000,
     rating: 4.8,
@@ -252,7 +252,7 @@ export const MOCK_PROPERTIES: Property[] = [
     description:
       "700년 역사를 자랑하는 전주 한옥마을 중심에 위치한 고택 스테이입니다. 전통 한식 조식과 함께 진정한 한국의 미를 경험하세요.",
     images: [
-      "https://images.unsplash.com/photo-1571003123771-bd6dc02a4ec5?w=1200&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=1200&h=800&fit=crop",
       "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=600&fit=crop",
     ],
     pricePerNight: 165000,
