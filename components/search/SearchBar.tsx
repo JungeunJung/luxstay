@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
@@ -37,7 +38,40 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState(0);
   const [activeCell, setActiveCell] = useState<ActiveCell>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
+  const checkinRef = useRef<HTMLButtonElement>(null);
+  const checkoutRef = useRef<HTMLButtonElement>(null);
+  const guestsRef = useRef<HTMLButtonElement>(null);
+
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
+
+  const updateDropdownPos = (ref: React.RefObject<HTMLButtonElement | null>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    setDropdownPos({
+      top: rect.bottom + window.scrollY + 10,
+      left: rect.left + window.scrollX,
+    });
+  };
+
+  const updateDropdownPosDiv = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    setDropdownPos({
+      top: rect.bottom + window.scrollY + 10,
+      left: rect.left + window.scrollX,
+    });
+  };
+
+  const getDropdownLeft = (ref: React.RefObject<HTMLButtonElement | null>) => {
+    if (!ref.current || !wrapperRef.current) return 0;
+    const wrapRect = wrapperRef.current.getBoundingClientRect();
+    const btnRect = ref.current.getBoundingClientRect();
+    return btnRect.left - wrapRect.left;
+  };
 
   const handleSearch = (loc?: string) => {
     const params = new URLSearchParams();
@@ -104,8 +138,13 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
 
           {/* 여행지 */}
           <div
+            ref={locationRef}
             className={`flex items-center px-6 flex-1 min-w-0 cursor-text h-full rounded-l-full transition-colors ${activeCell === "location" ? "bg-gray-50" : "hover:bg-gray-50"}`}
-            onMouseDown={(e) => { e.preventDefault(); setActiveCell("location"); }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setActiveCell("location");
+              updateDropdownPosDiv(locationRef);
+            }}
           >
             <div className="min-w-0 w-full">
               <p className="font-en text-[11px] font-semibold text-black leading-none">여행지</p>
@@ -125,9 +164,14 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
 
           {/* 체크인 */}
           <button
+            ref={checkinRef}
             type="button"
-            className={`hidden sm:flex flex-col items-start px-6 h-full transition-colors ${activeCell === "checkin" ? "bg-gray-50" : "hover:bg-gray-50"}`}
-            onClick={() => setActiveCell(activeCell === "checkin" ? null : "checkin")}
+            className={`hidden sm:flex flex-col justify-center items-start px-6 h-full transition-colors ${activeCell === "checkin" ? "bg-gray-50" : "hover:bg-gray-50"}`}
+            onClick={() => {
+              const next = activeCell === "checkin" ? null : "checkin";
+              setActiveCell(next);
+              if (next) updateDropdownPos(checkinRef);
+            }}
           >
             <span className="font-en text-[11px] font-semibold text-black leading-none">체크인</span>
             <span className={`text-sm mt-1 ${checkin ? "text-gray-800 font-medium" : "text-gray-400"}`}>
@@ -139,9 +183,14 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
 
           {/* 체크아웃 */}
           <button
+            ref={checkoutRef}
             type="button"
-            className={`hidden md:flex flex-col items-start px-6 h-full transition-colors ${activeCell === "checkout" ? "bg-gray-50" : "hover:bg-gray-50"}`}
-            onClick={() => setActiveCell(activeCell === "checkout" ? null : "checkout")}
+            className={`hidden md:flex flex-col justify-center items-start px-6 h-full transition-colors ${activeCell === "checkout" ? "bg-gray-50" : "hover:bg-gray-50"}`}
+            onClick={() => {
+              const next = activeCell === "checkout" ? null : "checkout";
+              setActiveCell(next);
+              if (next) updateDropdownPos(checkoutRef);
+            }}
           >
             <span className="font-en text-[11px] font-semibold text-black leading-none">체크아웃</span>
             <span className={`text-sm mt-1 ${checkout ? "text-gray-800 font-medium" : "text-gray-400"}`}>
@@ -151,22 +200,29 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
 
           <div className="hidden md:block w-px h-8 bg-gray-200 shrink-0" />
 
-          {/* 여행자 + 검색 */}
-          <div className="flex items-center gap-3 pl-6 pr-3">
-            <button
-              type="button"
-              className="hidden sm:flex flex-col items-start"
-              onClick={() => setActiveCell(activeCell === "guests" ? null : "guests")}
-            >
-              <span className="font-en text-[11px] font-semibold text-black leading-none">여행자</span>
-              <span className={`text-sm mt-1 ${guests > 0 ? "text-gray-800 font-medium" : "text-gray-400"}`}>
-                {guests > 0 ? `${guests}명` : "인원 추가"}
-              </span>
-            </button>
+          {/* 여행자 */}
+          <button
+            ref={guestsRef}
+            type="button"
+            className={`hidden sm:flex flex-col justify-center items-start px-6 h-full transition-colors ${activeCell === "guests" ? "bg-gray-50" : "hover:bg-gray-50"}`}
+            onClick={() => {
+              const next = activeCell === "guests" ? null : "guests";
+              setActiveCell(next);
+              if (next) updateDropdownPos(guestsRef);
+            }}
+          >
+            <span className="font-en text-[11px] font-semibold text-black leading-none">여행자</span>
+            <span className={`text-sm mt-1 ${guests > 0 ? "text-gray-800 font-medium" : "text-gray-400"}`}>
+              {guests > 0 ? `${guests}명` : "인원 추가"}
+            </span>
+          </button>
+
+          {/* 검색 버튼 */}
+          <div className="pr-3 shrink-0">
             <button
               type="button"
               onClick={() => handleSearch()}
-              className="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-gray-900 active:scale-[0.97] transition-all shrink-0"
+              className="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-gray-900 active:scale-[0.97] transition-all"
               aria-label="검색"
             >
               <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
@@ -177,9 +233,12 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
           </div>
         </div>
 
-        {/* 여행지 드롭다운 */}
-        {activeCell === "location" && (
-          <div className={`${DROPDOWN_BASE} top-[calc(100%+10px)] left-0 w-80`}>
+        {/* 드롭다운 - Portal로 body에 렌더링 */}
+        {mounted && dropdownPos && activeCell === "location" && createPortal(
+          <div
+            className={`${DROPDOWN_BASE} w-80`}
+            style={{ position: "absolute", top: dropdownPos.top, left: dropdownPos.left }}
+          >
             <p className="font-en text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
               {location ? "검색 결과" : "인기 여행지"}
             </p>
@@ -204,12 +263,15 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
                 ))}
               </ul>
             )}
-          </div>
+          </div>,
+          document.body
         )}
 
-        {/* 체크인 드롭다운 */}
-        {activeCell === "checkin" && (
-          <div className={`${DROPDOWN_BASE} top-[calc(100%+10px)] left-[28%] w-72`}>
+        {mounted && dropdownPos && activeCell === "checkin" && createPortal(
+          <div
+            className={`${DROPDOWN_BASE} w-72`}
+            style={{ position: "absolute", top: dropdownPos.top, left: dropdownPos.left }}
+          >
             <p className="font-en text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">체크인 날짜</p>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {QUICK_DATES.map((label) => (
@@ -217,7 +279,7 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
                   type="button"
                   key={label}
                   className={`px-4 py-3 rounded-2xl border text-13 font-semibold transition-colors text-left ${checkin === label ? "border-black bg-black text-white" : "border-gray-200 text-black hover:border-gray-400"}`}
-                  onClick={() => { setCheckin(label); setActiveCell("checkout"); }}
+                  onClick={() => { setCheckin(label); if (checkoutRef.current) updateDropdownPos(checkoutRef); setActiveCell("checkout"); }}
                 >
                   {label}
                 </button>
@@ -226,14 +288,17 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
             <input
               type="date"
               className="w-full text-13 text-black bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none focus:border-black transition-colors"
-              onChange={(e) => { setCheckin(e.target.value); setActiveCell("checkout"); }}
+              onChange={(e) => { setCheckin(e.target.value); if (checkoutRef.current) updateDropdownPos(checkoutRef); setActiveCell("checkout"); }}
             />
-          </div>
+          </div>,
+          document.body
         )}
 
-        {/* 체크아웃 드롭다운 */}
-        {activeCell === "checkout" && (
-          <div className={`${DROPDOWN_BASE} top-[calc(100%+10px)] left-[48%] w-72`}>
+        {mounted && dropdownPos && activeCell === "checkout" && createPortal(
+          <div
+            className={`${DROPDOWN_BASE} w-72`}
+            style={{ position: "absolute", top: dropdownPos.top, left: dropdownPos.left }}
+          >
             <p className="font-en text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">체크아웃 날짜</p>
             <div className="grid grid-cols-3 gap-2 mb-4">
               {NIGHTS.map((label) => (
@@ -241,7 +306,7 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
                   type="button"
                   key={label}
                   className={`py-3 rounded-2xl border text-13 font-semibold transition-colors text-center ${checkout === label ? "border-black bg-black text-white" : "border-gray-200 text-black hover:border-gray-400"}`}
-                  onClick={() => { setCheckout(label); setActiveCell("guests"); }}
+                  onClick={() => { setCheckout(label); if (guestsRef.current) updateDropdownPos(guestsRef); setActiveCell("guests"); }}
                 >
                   {label}
                 </button>
@@ -250,14 +315,17 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
             <input
               type="date"
               className="w-full text-13 text-black bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none focus:border-black transition-colors"
-              onChange={(e) => { setCheckout(e.target.value); setActiveCell("guests"); }}
+              onChange={(e) => { setCheckout(e.target.value); if (guestsRef.current) updateDropdownPos(guestsRef); setActiveCell("guests"); }}
             />
-          </div>
+          </div>,
+          document.body
         )}
 
-        {/* 인원 드롭다운 */}
-        {activeCell === "guests" && (
-          <div className={`${DROPDOWN_BASE} top-[calc(100%+10px)] right-0 w-60`}>
+        {mounted && dropdownPos && activeCell === "guests" && createPortal(
+          <div
+            className={`${DROPDOWN_BASE} w-60`}
+            style={{ position: "absolute", top: dropdownPos.top, left: dropdownPos.left }}
+          >
             <p className="font-en text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">여행자 인원</p>
             <ul className="space-y-0.5">
               {GUEST_OPTIONS.map((opt) => (
@@ -273,7 +341,8 @@ export default function SearchBar({ variant = "default" }: SearchBarProps) {
                 </li>
               ))}
             </ul>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     );

@@ -62,7 +62,7 @@ export default function Header() {
       <header
         ref={headerRef}
         className="sticky top-0 z-50 bg-white transition-all duration-300"
-        style={{ boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.08)" : "none" }}
+        style={{ boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.08)" : "none", overflow: "visible" }}
       >
         {/* 기본 GNB 행 */}
         <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center gap-8">
@@ -126,11 +126,14 @@ export default function Header() {
 
         {/* 확장된 검색바 영역 */}
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            searchExpanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+          className={`transition-all duration-300 ease-in-out ${
+            searchExpanded
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-3 pointer-events-none h-0"
           }`}
+          style={{ overflow: "visible" }}
         >
-          <div className="max-w-[1000px] mx-auto px-6 pb-5">
+          <div className="max-w-[1000px] mx-auto px-6 pb-5" style={{ overflow: "visible" }}>
             <Suspense>
               <SearchBar variant="compact" />
             </Suspense>
