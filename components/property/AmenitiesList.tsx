@@ -7,7 +7,7 @@ interface AmenitiesListProps {
 
 export default function AmenitiesList({ amenities }: AmenitiesListProps) {
   return (
-    <div>
+    <div id="section-amenities">
       <h2 className="text-xl font-bold mb-4">편의 시설</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {amenities.map((amenity) => (

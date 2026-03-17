@@ -10,7 +10,13 @@ interface BookingWidgetProps {
 
 export default function BookingWidget({ property }: BookingWidgetProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <div
+      id="booking-widget"
+      data-price={property.pricePerNight}
+      data-property-id={property.id}
+      data-property-name={property.name}
+      className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm"
+    >
       <div className="flex items-baseline gap-2 mb-6">
         <span className="font-en text-xl font-bold">{formatPrice(property.pricePerNight)}</span>
         <span className="text-sm text-gray-400">/ 박</span>

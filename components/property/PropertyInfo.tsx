@@ -1,5 +1,6 @@
 import { formatPrice } from "@/lib/utils";
 import type { Property } from "@/types/property";
+import ExpandableText from "@/components/property/ExpandableText";
 
 interface PropertyInfoProps {
   property: Property;
@@ -27,13 +28,13 @@ export default function PropertyInfo({ property }: PropertyInfoProps) {
       </div>
 
       {/* 숙소 소개 */}
-      <div>
+      <div id="section-intro">
         <h2 className="text-xl font-bold mb-3">숙소 소개</h2>
         <ExpandableText text={property.description} />
       </div>
 
       {/* 호스트 정보 */}
-      <div className="mt-8 pt-8 border-t border-gray-200">
+      <div id="section-host" className="mt-8 pt-8 border-t border-gray-200">
         <h2 className="text-xl font-bold mb-3">호스트 정보</h2>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-gray-500">
@@ -46,13 +47,5 @@ export default function PropertyInfo({ property }: PropertyInfoProps) {
         </div>
       </div>
     </div>
-  );
-}
-
-function ExpandableText({ text }: { text: string }) {
-  "use client";
-  // TODO: 클라이언트 컴포넌트로 분리하여 접기/펼치기 구현
-  return (
-    <p className="text-base text-gray-600 leading-relaxed">{text}</p>
   );
 }

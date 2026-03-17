@@ -6,7 +6,7 @@ interface PropertyMapProps {
 
 export default function PropertyMap({ location }: PropertyMapProps) {
   return (
-    <div>
+    <div id="section-map">
       <h2 className="text-xl font-bold mb-4">위치</h2>
       <p className="text-sm text-gray-500 mb-4">{location.address}</p>
       {/* TODO: Kakao Maps 또는 Google Maps 임베드 */}
