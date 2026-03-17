@@ -11,7 +11,7 @@ export default async function BookingConfirmationPage({
   const { bookingId } = await searchParams;
 
   return (
-    <main className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-16">
+    <main className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-16">
       <div className="max-w-2xl mx-auto text-center">
         {/* 완료 아이콘 */}
         <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">

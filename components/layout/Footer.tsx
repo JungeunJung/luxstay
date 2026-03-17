@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-24">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-12">
+    <footer className="bg-white mt-24">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-12">
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           {/* 브랜드 */}
@@ -48,7 +48,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      </div>
+      {/* 하단 카피라이트 — 전체 너비 */}
+      <div className="border-t border-gray-100">
+        <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="font-en text-11 text-gray-400">© 2026 LUXSTAY. All Rights Reserved.</p>
           <p className="text-11 text-gray-300">
             사업자등록번호: 000-00-00000 | 통신판매업신고: 제0000-서울-0000호

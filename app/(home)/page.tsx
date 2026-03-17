@@ -15,7 +15,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 숙소 목록 ── */}
-      <section className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-10 pb-24">
+      <section className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-10 pb-24">
         <Suspense>
           <PropertyListSection />
         </Suspense>

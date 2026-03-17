@@ -39,7 +39,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white transition-shadow duration-300"
       style={{ boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.08)" : "none" }}
     >
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center gap-8">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center gap-8">
 
         {/* 로고 */}
         <Link

@@ -29,7 +29,7 @@ export default function FilterBar() {
 
   return (
     <div className="sticky top-20 z-40 bg-white border-b border-gray-200">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16">
         <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3 -mb-px">
             {/* 전체 탭 */}
             <button

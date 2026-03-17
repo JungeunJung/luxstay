@@ -19,7 +19,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   }
 
   return (
-    <main className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-8">
+    <main className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-8">
       {/* 이미지 갤러리 */}
       <ImageGallery images={property.images} title={property.name} />
 

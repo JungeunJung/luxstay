@@ -18,7 +18,7 @@ export default function BookingStepLayout({
   propertyId,
 }: BookingStepLayoutProps) {
   return (
-    <div className="max-w-screen-xl mx-auto px-6 md:px-10 lg:px-16 py-8">
+    <div className="max-w-[1800px] mx-auto px-6 md:px-10 lg:px-16 py-8">
       {/* 뒤로가기 */}
       <Link
         href={currentStep === 1 ? `/properties/${propertyId}` : `/booking/${propertyId}/step-${currentStep - 1}`}
