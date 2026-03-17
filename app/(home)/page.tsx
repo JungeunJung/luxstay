@@ -6,8 +6,8 @@ export default function HomePage() {
   return (
     <main>
       {/* ── 검색 바 ── */}
-      <section id="search-section" className="px-6 md:px-10 lg:px-16 py-4 bg-white">
-        <div className="max-w-[1000px] mx-auto">
+      <section id="search-section" className="py-4 bg-white overflow-visible relative z-50">
+        <div className="max-w-[1000px] mx-auto px-6 md:px-10 lg:px-16">
           <Suspense>
             <SearchBar variant="compact" />
           </Suspense>

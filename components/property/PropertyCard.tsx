@@ -16,7 +16,19 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property, layout = "grid" }: PropertyCardProps) {
   const [imgIdx, setImgIdx] = useState(0);
+  const [hovered, setHovered] = useState(false);
   const hasMultiple = property.images.length > 1;
+  const total = property.images.length;
+
+  const prev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setImgIdx((i) => (i - 1 + total) % total);
+  };
+
+  const next = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setImgIdx((i) => (i + 1) % total);
+  };
 
   if (layout === "list") {
     return (
@@ -101,8 +113,8 @@ export default function PropertyCard({ property, layout = "grid" }: PropertyCard
         <div
           className="relative overflow-hidden bg-gray-50"
           style={{ aspectRatio: "4/3" }}
-          onMouseEnter={() => hasMultiple && setImgIdx(1)}
-          onMouseLeave={() => setImgIdx(0)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
         >
           {/* 현재 이미지 */}
           <Image
@@ -133,10 +145,38 @@ export default function PropertyCard({ property, layout = "grid" }: PropertyCard
             <FavoriteButton propertyId={property.id} />
           </div>
 
+          {/* 좌우 화살표 버튼 */}
+          {hasMultiple && hovered && (
+            <>
+              {imgIdx > 0 && (
+                <button
+                  onClick={prev}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-all z-10"
+                  aria-label="이전 이미지"
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M6.5 1.5L3 5l3.5 3.5" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              )}
+              {imgIdx < total - 1 && (
+                <button
+                  onClick={next}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-all z-10"
+                  aria-label="다음 이미지"
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M3.5 1.5L7 5l-3.5 3.5" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              )}
+            </>
+          )}
+
           {/* 이미지 도트 인디케이터 */}
           {hasMultiple && (
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-              {property.images.slice(0, Math.min(property.images.length, 5)).map((_, i) => (
+              {property.images.slice(0, Math.min(total, 5)).map((_, i) => (
                 <span
                   key={i}
                   className={`block rounded-full transition-all duration-200 ${
